@@ -43,7 +43,7 @@
 :set ds ([:pick $ds 7 11] . $mm . [:pick $ds 4 6])
 
 ##### set temp location for saving Baclup #####
-:local fname1 ("/mikrotik-LOV-".[/system identity get name].$ds."-".$ts.".backup")
+:local fname1 ("/mikrotik-".[/system identity get name].$ds."-".$ts.".backup")
 #:log info message="fname1 is $fname1"
 
 ################### section with backup ###################
