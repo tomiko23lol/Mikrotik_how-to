@@ -1,24 +1,26 @@
 {
 #:log info "IPSec Watchdog Started"
-##### The host you want to ping######
+##### The host you want to ping ######
 :local HOST "192.168.200.1"
-##### Location of host########
+##### Location of host ########
 :local LOCATION "JAPAN"
-##### Interface to Remote Network#######
+##### Interface to Remote Network #######
 :local GW "ipip_JAPAN_mr-01"
 #### Ping Time out Increase or decrease as Required #####
 :local TIMEOUT "2000ms"
 #### How Many try's ######
 :local COUNT "20"
-### If less than 8 successful reply's Restart IPSec#####
+### If less than 8 successful reply's Restart IPSec #####
 :local LESSTHAN "4"
-### Name of IPsec_Policy#####
+### Name of IPsec_Policy #####
 :local POLICYNAME "peer_JAPAN_mr-01"
-### number of IPsec_Policy#####
+### number of IPsec_Policy #####
 :local POLICYNUMBER "1"
 
+######################################################################################
+################################## DONT EDIT BELOW ###################################
+######################################################################################
 
-##################################DONT EDIT BELOW###################################
 # :log info "Looking for $HOST at $LOCATION"
 # :log info "Route to IPSec endpoint in $LOCATION is via $GW"
 :if ([/ping interface=$GW $HOST interval=$TIMEOUT count=$COUNT]<$LESSTHAN) \
