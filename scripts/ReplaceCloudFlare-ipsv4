@@ -1,0 +1,1 @@
+:log info "Remove current Cloudflare IPs"; /ip firewall address-list remove [find where list="cloudflare-ips"]; :log info "Import newest Cloudflare IPs"; /import file-name=cloudflare-ips-v4.rsc;
