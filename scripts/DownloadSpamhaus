@@ -1,0 +1,3 @@
+ 
+/tool fetch url="http://joshaven.com/spamhaus.rsc" mode=http; 
+:log info "Downloaded spamhaus.rsc from Joshaven.com"; 
