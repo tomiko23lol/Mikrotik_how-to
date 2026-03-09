@@ -1,0 +1,4 @@
+ 
+/ip firewall address-list remove [find where comment="SpamHaus"] 
+/import file-name=spamhaus.rsc; 
+:log info "Removed old Spamhaus records and imported new list"; 
