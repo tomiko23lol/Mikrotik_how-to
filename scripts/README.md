@@ -3,6 +3,7 @@
 ## Backup and Export scripts
 - change variables for FTP 
 - run script with scheduler
+- tested on OS version 7.21.x
 
 
 ## ipsec test and reset script
