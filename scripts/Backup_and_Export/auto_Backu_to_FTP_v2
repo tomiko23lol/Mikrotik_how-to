@@ -1,0 +1,56 @@
+# Automated Backup_of_binary_config to external FTP server
+
+# ftp configuration
+:local ftphost "MY_FTP_IP"
+:local ftpuser "MY_USER"
+:local ftppassword "MY_PASSWORD"
+:local ftppath "/mnt/Pool4x8T/nas/Install/MikroTik/configBackups/"
+:local ftpport 21
+
+# USB storage auto detection
+:local usbpath ""
+
+:foreach i in=[/file find where type="disk"] do={
+    :local diskName [/file get $i name]
+    :if ([:find $diskName "usb"] = 0) do={
+        :set usbpath ($diskName . "/")
+        #:log info ("USB path detected: " . $usbpath)
+    }
+}
+
+
+
+#=========================================================
+# get time
+:local ts [/system clock get time]
+:set ts ([:pick $ts 0 2] . [:pick $ts 3 5] . [:pick $ts 6 8])
+
+# get Date
+:local ds [/system clock get date]
+
+
+##### set temp location for saving Baclup #####
+
+# file name for system backup - file name will be auto-servername-date-time.backup
+:local fname1 ("mikrotik-BRN-".[/system identity get name]."-".$ds."-".$ts.".backup")
+#:log info message="fname1 is $fname1"
+
+################### section with backup ##########
+
+# backup the data
+/system backup save dont-encrypt=yes name=("$usbpath"."$fname1")
+:log info message="System backup finished (1/3.1).";
+
+# upload the System backup
+/tool fetch address="$ftphost" port=$ftpport src-path=("/".$usbpath."/$fname1") user="$ftpuser" mode=ftp password="$ftppassword" dst-path="$ftppath/$fname1" upload=yes
+:log info message="Uploaded System .backup files to FTP. Waiting 60 seconds before removing the .backup file from storage. (2/3.1).  "
+
+# delay time to finish the upload - increase it if your backup file is big
+:delay 60s;
+# find file name start with mikrotik-  then remove
+:log info message="Removing .backup files from flash (3/3.1)."
+:foreach i in=[/file find] do={ :if ([:typeof [:find [/file get $i name] ($usbpath."mikrotik-")]]!="nil") do={/file remove $i}; }
+
+:log info message="Backup script successfully finished.";
+
+
